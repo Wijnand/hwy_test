@@ -34,6 +34,8 @@ jobs:
 
       - name: Build site
         run: npx astro build
+        env:
+          BUILD_HASH: ${{ github.sha }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

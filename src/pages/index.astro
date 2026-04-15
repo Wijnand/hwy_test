@@ -4,8 +4,8 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import homeData from "../../content/home/home.json";
 
+import { asset } from "../utils/asset.ts";
 const { name, subtitle, photo, tagline, bookingUrl, ctaLabel } = homeData;
-const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const taglineParagraphs = tagline.split("\n\n");
 ---
 
@@ -23,7 +23,7 @@ const taglineParagraphs = tagline.split("\n\n");
       <a href={bookingUrl} class="btn">{ctaLabel}</a>
     </div>
     <div class="hero__photo-wrap">
-      <img class="hero__photo" src={`${base}${photo}`} alt={name} />
+      <img class="hero__photo" src={asset(photo)} alt={name} />
     </div>
   </main>
 </BaseLayout>
