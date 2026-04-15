@@ -5,6 +5,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import aboutData from "../../content/about/about.json";
 
 const { eyebrow, heading, photo, bio } = aboutData;
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const bioParagraphs = bio.split("\n\n");
 ---
 
@@ -17,7 +18,7 @@ const bioParagraphs = bio.split("\n\n");
     </header>
 
     <div class="about__photo-wrap">
-      <img class="about__photo" src={photo} alt={heading} />
+      <img class="about__photo" src={`${base}${photo}`} alt={heading} />
     </div>
 
     <div class="about__bio">
