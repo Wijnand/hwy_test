@@ -1,0 +1,131 @@
+---
+// Treatments & prices page
+// Edit content at: content/behandelingen/*.json and content/behandelingen-pagina/index.json
+import BaseLayout from "../layouts/BaseLayout.astro";
+import pageData from "../../content/behandelingen-pagina/index.json";
+
+const { eyebrow, heading, intro } = pageData;
+
+const treatmentFiles = await Astro.glob("../../content/behandelingen/*.json");
+
+interface Treatment {
+  title: string;
+  description: string;
+  duration: string;
+  price: string;
+}
+
+const treatments: Treatment[] = treatmentFiles.map((f) => ({
+  title: f.title ?? "",
+  description: f.description ?? "",
+  duration: f.duration ?? "",
+  price: f.price ?? "",
+}));
+
+const { duration, price } = treatments[0] ?? { duration: "", price: "" };
+---
+
+<BaseLayout title={`${heading} — Home Within Yourself`}>
+  <main class="page treatments">
+
+    <header class="treatments__header">
+      <p class="treatments__eyebrow">{eyebrow}</p>
+      <h1 class="treatments__title">{heading}</h1>
+      <div class="treatments__meta">
+        <span>{duration}</span>
+        <span class="treatments__meta-sep">·</span>
+        <span>{price}</span>
+      </div>
+    </header>
+
+    <hr class="rule" />
+
+    <p class="treatments__intro">{intro}</p>
+
+    <ul class="treatments__list">
+      {treatments.map((treatment) => (
+        <li class="treatment">
+          <h2 class="treatment__title">{treatment.title}</h2>
+          <p class="treatment__description">{treatment.description}</p>
+        </li>
+      ))}
+    </ul>
+
+  </main>
+</BaseLayout>
+
+<style>
+  .treatments {
+    padding: 5rem 1.5rem 7rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .treatments__header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .treatments__eyebrow {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .treatments__title {
+    font-size: clamp(2.5rem, 8vw, 4rem);
+  }
+
+  .treatments__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .treatments__meta-sep {
+    opacity: 0.4;
+  }
+
+  .treatments__intro {
+    line-height: 1.9;
+    max-width: 480px;
+    color: var(--color-muted);
+  }
+
+  .treatments__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .treatment {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 3rem 0;
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  .treatment:first-child {
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .treatment__title {
+    font-size: clamp(2rem, 6vw, 3rem);
+  }
+
+  .treatment__description {
+    white-space: pre-line;
+    line-height: 2;
+    max-width: 520px;
+  }
+</style>

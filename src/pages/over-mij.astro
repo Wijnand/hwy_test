@@ -1,0 +1,105 @@
+---
+// About page
+// Edit content at: content/about/about.json (or via TinaCMS admin)
+import BaseLayout from "../layouts/BaseLayout.astro";
+import aboutData from "../../content/about/about.json";
+
+const { eyebrow, heading, photo, bio } = aboutData;
+const bioParagraphs = bio.split("\n\n");
+---
+
+<BaseLayout title="Over mij — Home Within Yourself">
+  <main class="page about">
+
+    <header class="about__header">
+      <p class="about__eyebrow">{eyebrow}</p>
+      <h1 class="about__title">{heading}</h1>
+    </header>
+
+    <div class="about__photo-wrap">
+      <img class="about__photo" src={photo} alt={heading} />
+    </div>
+
+    <div class="about__bio">
+      <hr class="rule" />
+      {bioParagraphs.map((para) => (
+        <p class="about__para">{para}</p>
+      ))}
+    </div>
+
+  </main>
+</BaseLayout>
+
+<style>
+  .about {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      "photo header"
+      "photo bio";
+    gap: 2.5rem 4rem;
+    align-items: start;
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+
+  .about__header {
+    grid-area: header;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-self: end;
+  }
+
+  .about__photo-wrap {
+    grid-area: photo;
+    position: sticky;
+    top: 5rem;
+  }
+
+  .about__photo {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+  }
+
+  .about__bio {
+    grid-area: bio;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .about__eyebrow {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .about__title {
+    font-size: clamp(2.5rem, 8vw, 4rem);
+  }
+
+  .about__para {
+    white-space: pre-line;
+    line-height: 2;
+  }
+
+  @media (max-width: 600px) {
+    .about {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "header"
+        "photo"
+        "bio";
+    }
+
+    .about__photo-wrap {
+      position: static;
+    }
+  }
+</style>

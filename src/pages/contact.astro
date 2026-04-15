@@ -1,0 +1,103 @@
+---
+// Contact page
+// Edit content at: content/contact/contact.json (or via TinaCMS admin)
+import BaseLayout from "../layouts/BaseLayout.astro";
+import contactData from "../../content/contact/contact.json";
+
+const { eyebrow, heading, intro, bookingUrl, ctaLabel, phone, email, location, note } = contactData;
+---
+
+<BaseLayout title="Contact — Home Within Yourself">
+  <main class="page contact">
+
+    <header class="contact__header">
+      <p class="contact__eyebrow">{eyebrow}</p>
+      <h1 class="contact__title">{heading}</h1>
+    </header>
+
+    <hr class="rule" />
+
+    <p class="contact__invite">{intro}</p>
+
+    <a href={bookingUrl} class="btn">{ctaLabel}</a>
+
+    <hr class="rule" />
+
+    <dl class="contact__details">
+      <div class="contact__row">
+        <dt class="contact__label">Telefoon</dt>
+        <dd class="contact__value">{phone}</dd>
+      </div>
+      <div class="contact__row">
+        <dt class="contact__label">E-mail</dt>
+        <dd class="contact__value">{email}</dd>
+      </div>
+      <div class="contact__row">
+        <dt class="contact__label">Locatie</dt>
+        <dd class="contact__value">{location}</dd>
+      </div>
+      <div class="contact__row">
+        <dt class="contact__label">Openingstijden</dt>
+        <dd class="contact__value">{note}</dd>
+      </div>
+    </dl>
+
+  </main>
+</BaseLayout>
+
+<style>
+  .contact {
+    padding: 5rem 1.5rem 7rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .contact__header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .contact__eyebrow {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .contact__title {
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    line-height: 1.2;
+  }
+
+  .contact__invite {
+    color: var(--color-muted);
+  }
+
+  .contact__details {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin: 0;
+  }
+
+  .contact__row {
+    display: grid;
+    grid-template-columns: 7rem 1fr;
+    gap: 1rem;
+    align-items: baseline;
+  }
+
+  .contact__label {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .contact__value {
+    margin: 0;
+    line-height: 1.7;
+  }
+</style>

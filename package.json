@@ -1,0 +1,19 @@
+{
+  "name": "home-within-yourself",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "tinacms dev -c \"astro dev\"",
+    "start": "tinacms dev -c \"astro dev\"",
+    "build": "tinacms build && astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "astro": "^4.16.0",
+    "tinacms": "^2.6.0",
+    "@tinacms/cli": "^1.6.9"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0"
+  }
+}
