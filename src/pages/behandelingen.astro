@@ -6,7 +6,7 @@ import pageData from "../../content/behandelingen-pagina/index.json";
 
 const { eyebrow, heading, intro } = pageData;
 
-const treatmentFiles = await Astro.glob("../../content/behandelingen/*.json");
+const treatmentModules = import.meta.glob("../../content/behandelingen/*.json", { eager: true });
 
 interface Treatment {
   title: string;
@@ -15,7 +15,7 @@ interface Treatment {
   price: string;
 }
 
-const treatments: Treatment[] = treatmentFiles.map((f) => ({
+const treatments: Treatment[] = Object.values(treatmentModules).map((f: any) => ({
   title: f.title ?? "",
   description: f.description ?? "",
   duration: f.duration ?? "",
