@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import { asset } from "../utils/asset.ts";
 
 interface Props {
   title: string;
@@ -7,9 +8,6 @@ interface Props {
 
 const { title } = Astro.props;
 const currentPath = Astro.url.pathname;
-
-import { asset } from "../utils/asset.ts";
-
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 const navLinks = [
@@ -30,24 +28,63 @@ const navLinks = [
   <body>
     <nav class="nav">
       <div class="nav__inner">
-      <a href={`${base}/`} class="nav__logo">
-        <img src={asset("/logo.png")} alt="Home Within Yourself" />
-      </a>
-      <ul class="nav__list">
-        {navLinks.map(({ href, label }) => {
-          const active = currentPath === href || currentPath === href + "/" || currentPath === href.replace(/\/$/, "");
-          return (
-            <li>
-              <a href={href} class:list={["nav__link", { "nav__link--active": active }]}>
-                {label}
-              </a>
-            </li>
-          );
-        })}
-      </ul>
+        <a href={`${base}/`} class="nav__logo">
+          <img src={asset("/logo.png")} alt="Home Within Yourself" />
+        </a>
+
+        <!-- Desktop links -->
+        <ul class="nav__list">
+          {navLinks.map(({ href, label }) => {
+            const active = currentPath === href || currentPath === href + "/" || currentPath === href.replace(/\/$/, "");
+            return (
+              <li>
+                <a href={href} class:list={["nav__link", { "nav__link--active": active }]}>
+                  {label}
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+
+        <!-- Mobile hamburger -->
+        <button class="nav__burger" aria-label="Menu openen" aria-expanded="false" aria-controls="mobile-menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+
+      <!-- Mobile menu -->
+      <div class="nav__mobile" id="mobile-menu" aria-hidden="true">
+        <ul class="nav__mobile-list">
+          {navLinks.map(({ href, label }) => {
+            const active = currentPath === href || currentPath === href + "/" || currentPath === href.replace(/\/$/, "");
+            return (
+              <li>
+                <a href={href} class:list={["nav__mobile-link", { "nav__link--active": active }]}>
+                  {label}
+                </a>
+              </li>
+            );
+          })}
+        </ul>
       </div>
     </nav>
+
     <slot />
+
+    <script>
+      const burger = document.querySelector(".nav__burger") as HTMLButtonElement;
+      const menu = document.querySelector(".nav__mobile") as HTMLElement;
+
+      burger?.addEventListener("click", () => {
+        const open = burger.getAttribute("aria-expanded") === "true";
+        burger.setAttribute("aria-expanded", String(!open));
+        menu.setAttribute("aria-hidden", String(open));
+        burger.classList.toggle("nav__burger--open", !open);
+        menu.classList.toggle("nav__mobile--open", !open);
+      });
+    </script>
   </body>
 </html>
 
@@ -58,10 +95,6 @@ const navLinks = [
     left: 0;
     right: 0;
     z-index: 10;
-    padding: 0.75rem 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     background-color: var(--color-background);
     border-bottom: 1px solid var(--color-rule);
   }
@@ -69,7 +102,9 @@ const navLinks = [
   .nav__inner {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 2.5rem;
+    padding: 0.75rem 1.5rem;
   }
 
   .nav__logo img {
@@ -78,6 +113,7 @@ const navLinks = [
     display: block;
   }
 
+  /* ── Desktop links ───────────────────────── */
   .nav__list {
     list-style: none;
     margin: 0;
@@ -103,5 +139,81 @@ const navLinks = [
   .nav__link--active {
     opacity: 1;
     color: var(--color-accent);
+  }
+
+  /* ── Hamburger button ────────────────────── */
+  .nav__burger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+    margin-left: auto;
+  }
+
+  .nav__burger span {
+    display: block;
+    width: 22px;
+    height: 1.5px;
+    background-color: var(--color-text);
+    transition: transform 0.25s, opacity 0.25s;
+    transform-origin: center;
+  }
+
+  .nav__burger--open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .nav__burger--open span:nth-child(2) { opacity: 0; }
+  .nav__burger--open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+  /* ── Mobile menu ─────────────────────────── */
+  .nav__mobile {
+    display: none;
+    padding: 1rem 1.5rem 1.5rem;
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .nav__mobile--open {
+    display: block;
+  }
+
+  .nav__mobile-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .nav__mobile-link {
+    font-size: 0.75rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--color-text);
+    opacity: 0.65;
+  }
+
+  .nav__mobile-link:hover,
+  .nav__mobile-link.nav__link--active {
+    opacity: 1;
+    color: var(--color-accent);
+  }
+
+  /* ── Responsive ──────────────────────────── */
+  @media (max-width: 600px) {
+    .nav__list {
+      display: none;
+    }
+
+    .nav__burger {
+      display: flex;
+    }
+
+    .nav__inner {
+      justify-content: space-between;
+    }
   }
 </style>
