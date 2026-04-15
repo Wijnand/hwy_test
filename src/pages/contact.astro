@@ -4,7 +4,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import contactData from "../../content/contact/contact.json";
 
-const { eyebrow, heading, intro, bookingUrl, ctaLabel, phone, email, location, note } = contactData;
+const { eyebrow, heading, intro, bookingUrl, ctaLabel, phone, email, location, instagram, note } = contactData;
 ---
 
 <BaseLayout title="Contact — Home Within Yourself">
@@ -17,7 +17,11 @@ const { eyebrow, heading, intro, bookingUrl, ctaLabel, phone, email, location, n
 
     <hr class="rule" />
 
-    <p class="contact__invite">{intro}</p>
+    <div class="contact__invite">
+      {intro.split("\n\n").map((para) => (
+        <p class="contact__invite-para">{para}</p>
+      ))}
+    </div>
 
     <a href={bookingUrl} class="btn">{ctaLabel}</a>
 
@@ -36,6 +40,14 @@ const { eyebrow, heading, intro, bookingUrl, ctaLabel, phone, email, location, n
         <dt class="contact__label">Locatie</dt>
         <dd class="contact__value">{location}</dd>
       </div>
+      {instagram && (
+        <div class="contact__row">
+          <dt class="contact__label">Instagram</dt>
+          <dd class="contact__value">
+            <a href={`https://instagram.com/${instagram}`} target="_blank" rel="noopener">@{instagram}</a>
+          </dd>
+        </div>
+      )}
       <div class="contact__row">
         <dt class="contact__label">Openingstijden</dt>
         <dd class="contact__value">{note}</dd>
@@ -72,6 +84,14 @@ const { eyebrow, heading, intro, bookingUrl, ctaLabel, phone, email, location, n
   }
 
   .contact__invite {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .contact__invite-para {
+    white-space: pre-line;
+    line-height: 2;
     color: var(--color-muted);
   }
 

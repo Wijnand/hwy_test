@@ -225,6 +225,11 @@ export default defineConfig({
           },
           {
             type: "string",
+            name: "instagram",
+            label: "Instagram gebruikersnaam (zonder @)",
+          },
+          {
+            type: "string",
             name: "note",
             label: "Notitie (bijv. openingstijden)",
           },
